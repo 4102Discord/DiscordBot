@@ -1,3 +1,3 @@
-export default class Blacklist {
-    
+var Blacklist = class Blacklist {
 }
+module.exports = Blacklist;

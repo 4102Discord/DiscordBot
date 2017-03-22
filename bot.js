@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-import Blacklist from './blacklist';
-
 var bannedWords = [];
+
+var blacklist = require('./blacklist');
 
 client.on('ready', () =>{
     console.log('The robot is online!');
