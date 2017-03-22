@@ -1,20 +1,28 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+// the string that flags a statement as a command for the robot
+const CMD = "!";
+
 var bannedWords = [];
 
 var command = require('./command');
-var blacklist = require('./blacklist');
+//var blacklist = require('./blacklist');  // have this called from the coommands module instead?
 
 client.on('ready', () =>{
     console.log('The robot is online!');
 })
 
+// Preston token
 client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
+// John S token
+//client.login('Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg');
 
+/*
 function commandIs(str, msg){
     return msg.content.toLowerCase().startsWith("!" + str);
 }
+*/
 
 function pluck(array){
     return array.map(function(item) {return item["name"]});
@@ -22,15 +30,24 @@ function pluck(array){
 
 function hasRole(mem, role)
 {
+    return pluck(mem.roles).includes(role);
+    /*
     if(pluck(mem.roles).includes(role))
-    return true;
+        return true;
     else {
         return false;
     }
+    */
 }
 
 client.on('message', message => {
     var args = message.content.split(/[ ]+/);
+
+    if(message.content.startsWith(CMD)) {
+        command.parseCommand(CMD, message);
+    }
+
+    /*
     if(commandIs("hello", message)){
         message.channel.sendMessage('Hello there, ' + message.author.username);
     }
@@ -99,4 +116,5 @@ client.on('message', message => {
     if(commandIs("db", message)){
        message.channel.sendMessage('These are the current banned words' + bannedWords.toString());
     }
+    */
 });
