@@ -3,6 +3,7 @@ const client = new Discord.Client();
 
 var bannedWords = [];
 
+var command = require('./command');
 var blacklist = require('./blacklist');
 
 client.on('ready', () =>{
