@@ -4,6 +4,7 @@ var Blacklist = new class Blacklist {
         this.list = ["noodle", "bonk", "flower"];
     }
 
+    // return true if string contains a blacklisted word
     detection(string){
         var detect = false;
         for(var i=0; i<this.list.length; i++) {
@@ -35,9 +36,8 @@ var Blacklist = new class Blacklist {
     }
 
     // clears all words from the blacklist
-    clear(message) {
+    clear() {
         this.list = [];
-        message.channel.sendMessage("Blacklist cleared of all words.");
     }
 }
 module.exports = Blacklist;

@@ -14,9 +14,9 @@ client.on('ready', () =>{
 })
 
 // Preston token
-//client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
+client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
 // John S token
-client.login('Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg');
+//client.login('Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg');
 
 /*
 function commandIs(str, msg){
@@ -41,7 +41,7 @@ function hasRole(mem, role)
 }
 
 client.on('message', message => {
-    var args = message.content.split(/[ ]+/);
+    //var args = message.content.split(/[ ]+/);
 
     // check for command
     if(message.content.startsWith(CMD)) {
