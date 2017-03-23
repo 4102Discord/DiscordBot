@@ -7,16 +7,16 @@ const CMD = "!";
 var bannedWords = [];
 
 var command = require('./command');
-//var blacklist = require('./blacklist');  // have this called from the coommands module instead?
+var blacklist = require('./blacklist');
 
 client.on('ready', () =>{
     console.log('The robot is online!');
 })
 
 // Preston token
-client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
+//client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
 // John S token
-//client.login('Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg');
+client.login('Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg');
 
 /*
 function commandIs(str, msg){
@@ -43,8 +43,15 @@ function hasRole(mem, role)
 client.on('message', message => {
     var args = message.content.split(/[ ]+/);
 
+    // check for command
     if(message.content.startsWith(CMD)) {
         command.parseCommand(CMD, message);
+    } else {
+        // check text against blacklist
+        if(blacklist.detection(message.content.toLowerCase())) {
+            message.channel.sendMessage("Blacklisted word detected!");
+            message.delete();
+        }
     }
 
     /*
