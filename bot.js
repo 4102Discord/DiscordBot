@@ -22,23 +22,22 @@ client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
 function commandIs(str, msg){
     return msg.content.toLowerCase().startsWith("!" + str);
 }
-*/
 
 function pluck(array){
     return array.map(function(item) {return item["name"]});
 }
 
-function hasRole(mem, role)
-{
+function hasRole(mem, role){
     return pluck(mem.roles).includes(role);
-    /*
-    if(pluck(mem.roles).includes(role))
-        return true;
-    else {
-        return false;
-    }
-    */
-}
+    
+    //if(pluck(mem.roles).includes(role))
+    //    return true;
+    //else {
+    //    return false;
+    //}
+    
+} 
+*/
 
 client.on('message', message => {
     //var args = message.content.split(/[ ]+/);
