@@ -48,7 +48,7 @@ client.on('message', message => {
     } else {
         // check text against blacklist
         if(blacklist.detection(message.content.toLowerCase())) {
-            message.channel.sendMessage("Blacklisted word detected!");
+            message.channel.sendMessage(message.author.username + " used a blacklisted word!");
             message.delete();
         }
     }
