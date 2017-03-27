@@ -1,3 +1,5 @@
+// command.js
+// this module parses and handles commands given to the bot, it is called by bot.js
 var Command = new class Command {
 
     constructor() { 
@@ -8,6 +10,17 @@ var Command = new class Command {
         var words = message.content.toLowerCase().split(/[ ]+/);
 
         switch (words[0]) {
+            // displays all commands the bot can recieve
+            case cmd + "help":
+                message.channel.sendMessage('The commands this bot can recieve are:\n' +
+                    cmd + 'hello - say hello\n' +
+                    cmd + 'add - add a word to the Blacklist\n' +
+                    cmd + 'remove - remove a word from the Blacklist\n' +
+                    cmd + 'clear - clears all words form the Blacklist\n' +
+                    cmd + 'showblacklist - displays all words in the Blacklist'
+                );
+                break;
+
             // say hello
             case cmd + "hello":
                 message.channel.sendMessage('Hello there, ' + message.author.username);
@@ -36,6 +49,12 @@ var Command = new class Command {
             case cmd + "clear":
                 this.blacklist.clear();
                 message.channel.sendMessage("Blacklist cleared of all words.");
+                break;
+
+            // displays all words in the blacklist
+            case cmd + "showblacklist":
+                this.blacklist.showBlacklist(message.channel);
+                break;
         }
     }
 }
