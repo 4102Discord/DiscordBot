@@ -52,9 +52,9 @@ var Command = new class Command {
                 break;
 
             // displays all words in the blacklist
-            case cmd + "showblacklist":
-                this.blacklist.showBlacklist(message.channel);
-                break;
+           // case cmd + "showblacklist":
+           //     this.blacklist.showBlacklist(message.channel);
+           //     break;
         }
     }
 }
