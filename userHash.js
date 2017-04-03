@@ -8,17 +8,11 @@ var UserHash = new class UserHash {
     // scan a server and place any users into the Hash that aren't there already
     scanServer(server){
         for (var [memberID, member] of this.users) {
-            this.loadUser(member);
+            if (!users.has(member.id))
+                users.set(member.id, new serverUser(member));
         }
     }
-
-    // load a user into the hash, if they are not already present
-    loadUser(member){
-        if (!users.has(member.id)) {
-            users.set(member.id, new serverUser(member));
-        }
-    }
-
+    
     // gets the strikes for the  user who's ID matches the parameter
     // is passed a user ID string
     // returns null if user not found 
