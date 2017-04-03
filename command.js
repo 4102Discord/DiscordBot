@@ -53,7 +53,7 @@ var Command = new class Command {
 
             // displays all words in the blacklist
             case cmd + "showblacklist":
-                //this.blacklist.showBlacklist(message.channel);
+                this.blacklist.showBlacklist();
                 message.author.sendMessage(showBlacklist);
                 break;
         }
