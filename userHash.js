@@ -1,24 +1,33 @@
+const Collection = require('./node_modules/discord.js/src/util/Collection');
+
 var UserHash = new class UserHash {
     constructor() {
-        import {serverUser} from './serverUser';
-        var users = new Map();
-        var temp = null;
+        this.users = new Collection();
+        console.log(this.users.first());
+        this.temp = null;
     }
 
     // scan a server and place any users into the Hash that aren't there already
     scanServer(server){
-        for (var [memberID, member] of this.users) {
-            if (!users.has(member.id))
-                users.set(member.id, new serverUser(member));
+        for (var [memberID, member] of server.members) {
+            if (this.users.has(memberID))
+                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0'});//'apple');//ServerUser(member, 'apple'));
+                //this.users[memberID] = new ServerUser(member);
         }
     }
     
+    // looks up user by ID and adds one strike, if they exist
+    addStrike(ID) {
+        if (this.users.has(ID)) 
+            this.users.get(ID).strikes ++;
+    }
+
     // gets the strikes for the  user who's ID matches the parameter
     // is passed a user ID string
     // returns null if user not found 
     getStrikes(ID){
         if (this.users.has(ID))
-            return this.users.get(ID).getStrikes;
+            return this.users.get(ID).strikes;
         else
             return null;
     }
@@ -26,12 +35,10 @@ var UserHash = new class UserHash {
     // looks up the user who sent the message in the Hash
     // returns true if the user's last message matches
     // adds new users to the Hash
-    compareMesage(message) {
+    compareMessage(message) {
         // if the user is not in the Hash, add them and set thier lastMessage
         if(!this.users.has(message.author.id)) {
-            this.temp = new serverUser(message.author);
-            this.temp.lastMessage = message.content; 
-            this.users.set(message.author.id, temp);
+            this.users.set(message.author.id, {'member': message.author, 'strikes': 0, 'lastMessage': message.content});
             return false;
         }
         // if the user is in the Hash, compare lastMessage to current message
