@@ -4,16 +4,13 @@ const Collection = require('./node_modules/discord.js/src/util/Collection');
 var UserHash = new class UserHash {
     constructor() {
         this.users = new Collection();
-        this.temp = null;
     }
 
     // scan a server and place any users into the Hash that aren't there already
     scanServer(server){
         for (const [memberID, member] of server.members) {
-            if (!this.users.has(memberID)) {
+            if (!this.users.has(memberID)) 
                 this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0'});
-                //console.log("Added user: " + member.id);
-            }
         }
     }
     
@@ -40,7 +37,6 @@ var UserHash = new class UserHash {
         // if the user is not in the Hash, add them and set thier lastMessage
         if(!this.users.has(message.author.id)) {
             this.users.set(message.author.id, {'member': message.author, 'strikes': 0, 'lastMessage': message.content});
-            //console.log("Added user: " + message.author.id);
             return false;
         }
         // if the user is in the Hash, compare lastMessage to current message
