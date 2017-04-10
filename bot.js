@@ -8,12 +8,13 @@ var bannedWords = [];
 
 var command = require('./command');
 var blacklist = require('./blacklist');
-
+var userHash = require('./userHash');
 
 client.on('ready', () =>{
     console.log('The robot is online!');
-    client.channels.find("name", "general").sendMessage("Hello, I'm ModBod! Type !help for a list of my commands!");
-    
+    var myServer = client.channels.find("name", "general");
+    userHash.scanServer(myServer);
+    myServer.sendMessage("Hello, I'm ModBod! Type !help for a list of my commands!");
 })
 
 // Preston token
@@ -54,6 +55,10 @@ client.on('message', message => {
         // check text against blacklist
         if(blacklist.detection(message.content.toLowerCase())) {
             message.channel.sendMessage(message.author.username + " used a blacklisted word!");
+            message.delete();
+        } 
+        // check if duplicate message
+        else if (userHash.compareMessage(message)) {
             message.delete();
         }
     }
