@@ -4,15 +4,16 @@ var Command = new class Command {
 
     constructor() { 
         this.blacklist = require('./blacklist');
+        this.userHash = require('./userHash');
     }
 
     parseCommand(cmd, message) {
-        var words = message.content.toLowerCase().split(/[ ]+/);
+        var words = message.content.split(/[ ]+/);
 
-        switch (words[0]) {
+        switch (words[0].toLowerCase()) {
             // displays all commands the bot can recieve
             case cmd + "help":
-                message.channel.sendMessage('The commands this bot can recieve are:\n' +
+                message.channel.sendMessage('The commands this bot can receive are:\n' +
                     cmd + 'hello - say hello\n' +
                     cmd + 'add - add a word to the Blacklist\n' +
                     cmd + 'remove - remove a word from the Blacklist\n' +
@@ -56,7 +57,22 @@ var Command = new class Command {
             case cmd + "showblacklist":
                 this.blacklist.showBlacklist(message.channel);
                 break;
-                
+
+            case cmd + "liststrikes":
+                if(words.length > 1)
+                    message.author.sendMessage(this.userHash.listStrikes(words[1]));
+                else
+                    message.channel.sendMessage("This command requires a username!");    
+                break;
+
+            /*case cmd + "addstrike":
+                if(words.length > 1)
+                    message.author.sendMessage(this.userHash.addStrike(words[1]));
+                else
+                    message.channel.sendMessage("This command requires a comment!"); 
+                message.channel.sendMessage("strike added against user");       
+                break;
+                */
             // kicks a user specified
                 case cmd + "kick":
         if(hasRole(message.member, "Owner") || (hasRole(message.member, "Mod"))){

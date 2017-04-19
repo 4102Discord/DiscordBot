@@ -4,20 +4,25 @@ const Collection = require('./node_modules/discord.js/src/util/Collection');
 var UserHash = new class UserHash {
     constructor() {
         this.users = new Collection();
+        
     }
 
+    
     // scan a server and place any users into the Hash that aren't there already
     scanServer(server){
         for (const [memberID, member] of server.members) {
             if (!this.users.has(memberID)) 
-                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0'});
+                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0', 'strikeHash': []});
         }
     }
     
     // looks up user by ID and adds one strike, if they exist
-    addStrike(ID) {
-        if (this.users.has(ID)) 
+    addStrike(ID, comment) {
+        if (this.users.has(ID)){
             this.users.get(ID).strikes ++;
+            this.users.get(ID).strikeHash.push(comment);
+            console.log(comment);
+        }
     }
 
     // gets the strikes for the  user who's ID matches the parameter
@@ -28,6 +33,24 @@ var UserHash = new class UserHash {
             return this.users.get(ID).strikes;
         else
             return null;
+    }
+    //gets the list of comments for each stike for a user and pm's them to the user who called listStrikes
+    listStrikes(userName){
+        var strikeList = "User " + userName + " has the following strikes: \n";
+        console.log(userName);
+        for (const [ID, user] of this.users){
+            console.log(user.member.displayName + " " + ID);
+            if(user.member.displayName === userName){
+                console.log("Match found");
+                for(var i = 0; i<user.strikeHash.length; i++){
+                    strikeList = strikeList + (i+1) + ": " + user.strikeHash[i] + "\n"; 
+
+                }
+               
+             }
+        }  
+         console.log(strikeList);
+         return strikeList; 
     }
 
     // looks up the user who sent the message in the Hash

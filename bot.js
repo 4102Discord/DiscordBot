@@ -55,9 +55,9 @@ client.on('message', message => {
         // check text against blacklist
         if(blacklist.detection(message.content.toLowerCase())) {
             message.channel.sendMessage(message.author.username + " used a blacklisted word!");
-            message.delete();
-            userHash.addStrike(message.author.id);
+            userHash.addStrike(message.author.id, "This strike was for using a blacklisted word");
             message.channel.sendMessage(message.author.username + " has " + userHash.getStrikes(message.author.id) + " strikes!");
+            message.delete();
         } 
         // check if duplicate message
         else if (userHash.compareMessage(message)) {
