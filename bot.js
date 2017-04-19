@@ -8,9 +8,13 @@ var bannedWords = [];
 
 var command = require('./command');
 var blacklist = require('./blacklist');
+var userHash = require('./userHash');
 
 client.on('ready', () =>{
     console.log('The robot is online!');
+    var myServer = client.channels.find("name", "general");
+    userHash.scanServer(myServer);
+    myServer.sendMessage("Hello, I'm ModBod! Type !help for a list of my commands!");
 })
 
 // Preston token
@@ -18,6 +22,7 @@ client.login('Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM');
 // John S token
 //client.login('Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg');
 
+//client.sendMessage(284110491994030080, "Test");
 /*
 function commandIs(str, msg){
     return msg.content.toLowerCase().startsWith("!" + str);
@@ -39,6 +44,7 @@ function hasRole(mem, role){
 } 
 */
 
+
 client.on('message', message => {
     //var args = message.content.split(/[ ]+/);
 
@@ -49,6 +55,12 @@ client.on('message', message => {
         // check text against blacklist
         if(blacklist.detection(message.content.toLowerCase())) {
             message.channel.sendMessage(message.author.username + " used a blacklisted word!");
+            userHash.addStrike(message.author.id, "This strike was for using a blacklisted word");
+            message.channel.sendMessage(message.author.username + " has " + userHash.getStrikes(message.author.id) + " strikes!");
+            message.delete();
+        } 
+        // check if duplicate message
+        else if (userHash.compareMessage(message)) {
             message.delete();
         }
     }
