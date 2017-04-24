@@ -15,11 +15,12 @@ var Command = new class Command {
             case cmd + "help":
                 message.channel.sendMessage('The commands this bot can receive are:\n' +
                     cmd + 'hello - say hello\n' +
-                    cmd + 'add - add a word to the Blacklist\n' +
-                    cmd + 'remove - remove a word from the Blacklist\n' +
+                    cmd + 'add <word> - add a word to the Blacklist\n' +
+                    cmd + 'remove <word> - remove a word from the Blacklist\n' +
                     cmd + 'clear - clears all words form the Blacklist\n' +
                     cmd + 'showblacklist - displays all words in the Blacklist\n' +
-                    cmd + 'kick - kicks the user specified by the Owner or Mod'
+                    cmd + 'kick <username>- kicks the user specified by the Owner or Mod\n' +
+                    cmd + 'listStrikes <username> - messages you a list of the strikes that the specified user has against them'
                 );
                 break;
 
@@ -64,15 +65,23 @@ var Command = new class Command {
                 else
                     message.channel.sendMessage("This command requires a username!");    
                 break;
+            //adds a strike to a user within the users hash and also includes a reason as a string.
+            case cmd +"addstrike":
+                var reason = " ";
+                //this for loop iterates through the array of words that the user passed to the command. It concatanates everything past the command words at words[1] into a single string to be passed to the addstrike command.
+                for(var i = 2; i < words.length; i++){ 
+                    reason += (words[i] + " ");
+                }
 
-            /*case cmd + "addstrike":
-                if(words.length > 1)
-                    message.author.sendMessage(this.userHash.addStrike(words[1]));
-                else
-                    message.channel.sendMessage("This command requires a comment!"); 
-                message.channel.sendMessage("strike added against user");       
+                if(words.length > 2){
+                    this.userHash.addStrike(words[1], reason);
+                    message.channel.sendMessage("Strike added to " + words[1] + "!");
+                }           
+                else    
+                    message.channel.sendMessage("Please provide a reason for the strike!")
                 break;
-                */
+
+            
             // kicks a user specified
                 case cmd + "kick":
         if(hasRole(message.member, "Owner") || (hasRole(message.member, "Mod"))){

@@ -15,14 +15,41 @@ var UserHash = new class UserHash {
                 this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0', 'strikeHash': []});
         }
     }
-    
+    /*getUserID(userName){
+        for(const [ ID, user] of this.users){
+            if(user.member.displayName === userName){
+                return ID;
+            }
+            else 
+                return null;
+        }
+    }*/
     // looks up user by ID and adds one strike, if they exist
-    addStrike(ID, comment) {
-        if (this.users.has(ID)){
+    addStrike(userName, comment) {
+        //console.log(userName);
+        console.log(comment);
+       // var UserID = UserHash.getUserID(userName);
+        //console.log(UserID);
+        for(const [ ID, user] of this.users){
+            console.log(user.member.displayName+ " " + ID);
+            if(user.member.displayName === userName){
+                console.log("Match found");
+           //     this.users.get(ID).strikes ++;
+             //   this.users.get(ID).strikesHash.push(comment);
+                if (this.users.has(ID)){
+                    this.users.get(ID).strikes ++;
+                    this.users.get(ID).strikeHash.push(comment);
+                    console.log(comment);
+                 }
+                
+            }
+        }  
+        
+        /*if (this.users.has(ID)){
             this.users.get(ID).strikes ++;
             this.users.get(ID).strikeHash.push(comment);
             console.log(comment);
-        }
+        }*/
     }
 
     // gets the strikes for the  user who's ID matches the parameter

@@ -55,7 +55,7 @@ client.on('message', message => {
         // check text against blacklist
         if(blacklist.detection(message.content.toLowerCase())) {
             message.channel.sendMessage(message.author.username + " used a blacklisted word!");
-            userHash.addStrike(message.author.id, "This strike was for using a blacklisted word");
+            userHash.addStrike(message.author.username, "This strike was for using a blacklisted word");
             message.channel.sendMessage(message.author.username + " has " + userHash.getStrikes(message.author.id) + " strikes!");
             message.delete();
         } 
