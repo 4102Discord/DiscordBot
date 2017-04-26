@@ -12,18 +12,11 @@ var UserHash = new class UserHash {
     scanServer(server){
         for (const [memberID, member] of server.members) {
             if (!this.users.has(memberID)) 
-                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0', 'strikeHash': []});
+                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0', 'strikeHash': [], 'kickArray': [], 'kicks': 0});
         }
     }
-    /*getUserID(userName){
-        for(const [ ID, user] of this.users){
-            if(user.member.displayName === userName){
-                return ID;
-            }
-            else 
-                return null;
-        }
-    }*/
+    
+
     // looks up user by ID and adds one strike, if they exist
     addStrike(userName, comment) {
         //console.log(userName);
@@ -34,8 +27,6 @@ var UserHash = new class UserHash {
             console.log(user.member.displayName+ " " + ID);
             if(user.member.displayName === userName){
                 console.log("Match found");
-           //     this.users.get(ID).strikes ++;
-             //   this.users.get(ID).strikesHash.push(comment);
                 if (this.users.has(ID)){
                     this.users.get(ID).strikes ++;
                     this.users.get(ID).strikeHash.push(comment);
@@ -43,13 +34,20 @@ var UserHash = new class UserHash {
                  }
                 
             }
-        }  
-        
-        /*if (this.users.has(ID)){
-            this.users.get(ID).strikes ++;
-            this.users.get(ID).strikeHash.push(comment);
-            console.log(comment);
-        }*/
+         }
+    }  
+    addKick(userName, comment){
+        for(const [ ID, user] of this.users){
+              console.log(user.member.displayName+ " " + ID);
+              if(user.member.displayName === userName){
+                    if (this.users.has(ID)){
+                        this.users.get(ID).kicks ++;
+                        this.users.get(ID).kickHash.push(comment);
+                        
+                    }
+                    
+              }
+         }
     }
 
     // gets the strikes for the  user who's ID matches the parameter
@@ -73,11 +71,30 @@ var UserHash = new class UserHash {
                     strikeList = strikeList + (i+1) + ": " + user.strikeHash[i] + "\n"; 
 
                 }
-               
-             }
+                
+            }
         }  
-         console.log(strikeList);
-         return strikeList; 
+        console.log(strikeList);
+        return strikeList; 
+    }
+
+
+    listkicks(userName){
+        var kickList = "User " + userName + " has the following kicks: \n";
+        
+        for (const [ID, user] of this.users){
+            
+            if(user.member.displayName === userName){
+                
+                for(var i = 0; i<user.kickArray.length; i++){
+                    kickList = kickList + (i+1) + ": " + user.kickArray[i] + "\n"; 
+
+                }
+                
+            }
+        }  
+        
+        return kickList; 
     }
 
     // looks up the user who sent the message in the Hash
