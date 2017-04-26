@@ -35,6 +35,10 @@ var Blacklist = new class Blacklist {
         this.list.push(word);
     }
 
+    showBlacklist(message){
+        message.author.sendMessage(this.list);
+    }
+
     // clears all words from the blacklist
     clear() {
         this.list = [];

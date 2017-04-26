@@ -53,16 +53,19 @@ client.on('message', message => {
         command.parseCommand(CMD, message);
     } else {
         // check text against blacklist
-        if(blacklist.detection(message.content.toLowerCase())) {
-            message.channel.sendMessage(message.author.username + " used a blacklisted word!");
-            userHash.addStrike(message.author.id, "This strike was for using a blacklisted word");
-            message.channel.sendMessage(message.author.username + " has " + userHash.getStrikes(message.author.id) + " strikes!");
-            message.delete();
-        } 
+        if(!(message.author.id === '284109795500490754')){
+            if(blacklist.detection(message.content.toLowerCase())) {
+                message.channel.sendMessage(message.author.username + " used a blacklisted word!");
+                userHash.addStrike(message.author.username, "This strike was for using a blacklisted word");
+                message.channel.sendMessage(message.author.username + " has " + userHash.getStrikes(message.author.id) + " strikes!");
+                message.delete();
+            } 
         // check if duplicate message
-        else if (userHash.compareMessage(message)) {
-            message.delete();
+            else if (userHash.compareMessage(message)) {
+                message.delete();
+            }
         }
+        
     }
 
     /*
