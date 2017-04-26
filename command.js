@@ -1,10 +1,15 @@
 // command.js
 // this module parses and handles commands given to the bot, it is called by bot.js
+
+const ytdl = require('ytdl-core');
+const streamOptions = { seek: 0, volume: 0.5 };
+
 var Command = new class Command {
 
     constructor() { 
         this.blacklist = require('./blacklist');
         this.userHash = require('./userHash');
+        this.connection = null;
     }
 
     parseCommand(cmd, message) {
@@ -15,6 +20,8 @@ var Command = new class Command {
             case cmd + "help":
                 message.channel.sendMessage('The commands this bot can receive are:\n' +
                     cmd + 'hello - say hello\n' +
+                    cmd + 'music <youtube url> - plays audio from a youtube video\n' +
+                    cmd + 'stop - stops currently playing audio\n' +
                     cmd + 'add <word> - add a word to the Blacklist\n' +
                     cmd + 'remove <word> - remove a word from the Blacklist\n' +
                     cmd + 'clear - clears all words form the Blacklist\n' +
@@ -22,6 +29,33 @@ var Command = new class Command {
                     cmd + 'kick <username>- kicks the user specified by the Owner or Mod\n' +
                     cmd + 'listStrikes <username> - messages you a list of the strikes that the specified user has against them'
                 );
+                break;
+
+            // stop music
+            case cmd + "stop":
+                if(this.connection != null) {
+                    message.channel.sendMessage("Stopping audio playback...");
+                    this.connection.disconnect();
+                }
+                break;
+
+            // play music
+            case cmd + "music":
+                if(words.length > 1) {
+                    if(!(message.member.voiceChannel === undefined)) {
+                        message.member.voiceChannel.join()
+                        .then(connection => {
+                            message.channel.sendMessage("Playing audio stream...");
+                            this.connection = connection;
+                            const stream = ytdl(words[1], {filter : 'audioonly'});
+                            const dispatcher = connection.playStream(stream, streamOptions);
+                        }).catch(console.error);
+                    }
+                    else
+                        message.channel.sendMessage(message.member.displayName + " is not connected to a voice channel!");
+                } 
+                else
+                    message.channel.sendMessage("No audio source specified!");
                 break;
 
             // say hello
