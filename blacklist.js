@@ -1,6 +1,10 @@
+// blacklist.js
+// this module stores the blacklist words, and checks strings if they contain a blacklisted word
+
 var Blacklist = new class Blacklist {
 
     constructor() {
+        // default blacklisted words for demonstration purposes
         this.list = ["noodle", "bonk", "flower"];
     }
 
@@ -22,7 +26,7 @@ var Blacklist = new class Blacklist {
     remove(word) {
         var size = this.list.length;
         for(var i=0; i<size; i++) {
-            if(this.list[i] == word) { //this.list[i].includes(word)) {
+            if(this.list[i] == word) { 
                 if(i < (size-1))
                     this.list[i] = this.list[size-1];
                 this.list.pop();
