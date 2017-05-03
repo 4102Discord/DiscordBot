@@ -7,47 +7,47 @@ var UserHash = new class UserHash {
         
     }
 
-    
     // scan a server and place any users into the Hash that aren't there already
     scanServer(server){
         for (const [memberID, member] of server.members) {
             if (!this.users.has(memberID)) 
-                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0', 'strikeHash': [], 'kickArray': [], 'kicks': 0});
+                this.users.set(memberID, {'member': member, 'strikes': 0, 'lastMessage': '0', 'strikeArray': [], 'kickArray': [], 'kicks': 0});
         }
     }
     
+    // searches the hash for a user by thier servername, return the ID for the first match
+    // returns null if there is no match
+    getID(userName) {
+        var id = null;
+        for(const [ID, user] of this.users){
+            if(user.member.displayName === userName)
+                id = ID;
+        }
+        return id;
+    }
 
-    // looks up user by ID and adds one strike, if they exist
+    // adds a strike with given comment to user by their servername
     addStrike(userName, comment) {
-        //console.log(userName);
-        console.log(comment);
-       // var UserID = UserHash.getUserID(userName);
-        //console.log(UserID);
-        for(const [ ID, user] of this.users){
-            console.log(user.member.displayName+ " " + ID);
-            if(user.member.displayName === userName){
-                console.log("Match found");
-                if (this.users.has(ID)){
-                    this.users.get(ID).strikes ++;
-                    this.users.get(ID).strikeHash.push(comment);
-                    console.log(comment);
-                 }
-                
-            }
-         }
+        var id = this.getID(userName);
+
+        if (this.users.has(id)){
+            this.users.get(id).strikes ++;
+            this.users.get(id).strikeArray.push(comment);
+        }
+        else
+            console.log("No record of user " + userName + " found.");
     }  
+
+    // adds a kick with given comment to user by their servername
     addKick(userName, comment){
-        for(const [ ID, user] of this.users){
-              console.log(user.member.displayName+ " " + ID);
-              if(user.member.displayName === userName){
-                    if (this.users.has(ID)){
-                        this.users.get(ID).kicks ++;
-                        this.users.get(ID).kickHash.push(comment);
-                        
-                    }
-                    
-              }
-         }
+        var id = this.getID(userName);
+
+        if (this.users.has(id)){
+            this.users.get(id).kicks ++;
+            this.users.get(id).kickArray.push(comment);
+        }
+        else
+            console.log("No record of user " + userName + " found.");
     }
 
     // gets the strikes for the  user who's ID matches the parameter
@@ -56,44 +56,37 @@ var UserHash = new class UserHash {
     getStrikes(ID){
         if (this.users.has(ID))
             return this.users.get(ID).strikes;
-        else
+        else 
             return null;
     }
-    //gets the list of comments for each stike for a user and pm's them to the user who called listStrikes
+
+    // gets the list of comments for each stike for a user and pm's them to the user who called listStrikes
     listStrikes(userName){
         var strikeList = "User " + userName + " has the following strikes: \n";
-        console.log(userName);
-        for (const [ID, user] of this.users){
-            console.log(user.member.displayName + " " + ID);
-            if(user.member.displayName === userName){
-                console.log("Match found");
-                for(var i = 0; i<user.strikeHash.length; i++){
-                    strikeList = strikeList + (i+1) + ": " + user.strikeHash[i] + "\n"; 
-
+        var id = this.getID(userName);
+            if(id != null) {
+                var user = this.users.get(id);
+                for(var i = 0; i<user.strikeArray.length; i++){
+                    strikeList = strikeList + (i+1) + ": " + user.strikeArray[i] + "\n"; 
                 }
-                
             }
-        }  
-        console.log(strikeList);
+            else 
+                strikeList = "No record of user " + userName + " found.";
         return strikeList; 
     }
 
-
+    // gets the list of comments for each kick for a user and pm's them to the user who called listKicks
     listkicks(userName){
         var kickList = "User " + userName + " has the following kicks: \n";
-        
-        for (const [ID, user] of this.users){
-            
-            if(user.member.displayName === userName){
-                
+        var id = this.getID(userName);
+            if(id != null) {
+                var user = this.users.get(id);
                 for(var i = 0; i<user.kickArray.length; i++){
                     kickList = kickList + (i+1) + ": " + user.kickArray[i] + "\n"; 
-
                 }
-                
             }
-        }  
-        
+            else 
+                kickList = "No record of user " + userName + " found.";
         return kickList; 
     }
 
