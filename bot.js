@@ -7,11 +7,8 @@ const client = new Discord.Client();
 // the string that flags a statement/message as a command for ModBot, must preceed the comand word
 const CMD = "!";
 // the login token for ModBot, provided by the owner's discord account (https://discordapp.com/developers/applications/me)
-const TOKEN = 'Mjg0MTA5Nzk1NTAwNDkwNzU0.C6howA.vlvZ_YYgbe8Fylc2ub6TR2cMtBM'; // these tokens are for demonstration only
-// const TOKEN = 'Mjk0MjAwNzU4ODY4NjM5NzY0.C7R8jQ.ABf0d3hqS2OhLxFNMIu2IfOf-cg'; // alternate demonstration token
-// ModBot's client id, also provided by the owner's discord account (https://discordapp.com/developers/applications/me)
-const ID = '284109795500490754'; // these ID's are for demonstration only
-//const ID = '294200758868639764' // alternate demonstration ID
+const TOKEN = "";
+const ID = ;
 
 var command = require('./command');
 var blacklist = require('./blacklist');
